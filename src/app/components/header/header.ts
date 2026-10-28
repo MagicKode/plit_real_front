@@ -10,4 +10,11 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
   phone: string = '+375 (25) 500-90-52';
   telegram: string = 'https://t.me/ваш_ник';
+
+  scrollTo(sectionId: string) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
 }
