@@ -1,0 +1,26 @@
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+
+    <!-- Фото мастера -->
+    <div class="w-full md:w-1/2">
+      <img src="master.jpeg" alt="Мастер Александр" class="w-full h-auto rounded-lg shadow-lg object-cover">
+    </div>
+
+    <!-- Текст -->
+    <div class="w-full md:w-1/2">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+        О мастере: {{ masterName }}
+      </h2>
+      <p class="text-xl text-yellow-600 font-semibold mb-4">
+        Опыт работы: {{ experience }}
+      </p>
+      <p class="text-gray-600 mb-6 leading-relaxed">
+        {{ description }}
+      </p>
+      <a href="tel:+375255009052" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-6 py-3 rounded-full transition">
+        📞 Позвонить
+      </a>
+    </div>
+
+  </div>
+</section>

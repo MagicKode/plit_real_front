@@ -8,6 +8,7 @@ interface Service {
 
 @Component({
   selector: 'app-services',
+  standalone: true,
   imports: [],
   templateUrl: './services.html',
   styleUrl: './services.css',
