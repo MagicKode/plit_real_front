@@ -8,5 +8,4 @@ import { Component } from '@angular/core';
   styleUrl: './hero.css',
 })
 export class HeroComponent {
-  // Пока пусто, но здесь можно хранить данные
 }
