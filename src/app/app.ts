@@ -7,6 +7,7 @@ import { AboutComponent } from './components/about/about';
 import { ContactsComponent } from './components/contacts/contacts';
 import { PortfolioComponent } from './components/portfolio/portfolio';
 import { PricesComponent } from './components/prices/prices';
+import { ReviewsComponent } from './components/reviews/reviews';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { PricesComponent } from './components/prices/prices';
     ContactsComponent,
     PortfolioComponent,
     PricesComponent,
+    ReviewsComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
