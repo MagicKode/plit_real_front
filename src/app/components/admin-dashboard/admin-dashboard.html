@@ -1,0 +1,43 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Шапка админки -->
+  <header class="bg-gray-900 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Админ-панель PLITreal.</h1>
+    <button (click)="logout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded transition">
+      Выйти
+    </button>
+  </header>
+
+  <!-- Контент -->
+  <div class="container mx-auto p-6">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Добро пожаловать, Александр!</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Карточка "Услуги" -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-2">Услуги</h3>
+        <p class="text-gray-600 mb-4">Редактировать список услуг и цены.</p>
+        <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded transition">
+          Перейти
+        </button>
+      </div>
+
+      <!-- Карточка "Галерея" -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-2">Галерея работ</h3>
+        <p class="text-gray-600 mb-4">Загружать и удалять фото.</p>
+        <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded transition">
+          Перейти
+        </button>
+      </div>
+
+      <!-- Карточка "Контакты" -->
+      <div class="bg-white p-6 rounded-lg shadow-md">
+        <h3 class="text-lg font-bold mb-2">Контакты</h3>
+        <p class="text-gray-600 mb-4">Изменить телефон и ссылки на мессенджеры.</p>
+        <button class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded transition">
+          Перейти
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
