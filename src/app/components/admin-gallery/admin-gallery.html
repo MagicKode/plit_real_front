@@ -1,0 +1,27 @@
+<div class="p-6">
+  <h2 class="text-2xl font-bold mb-6">Галерея работ</h2>
+
+  <!-- Форма загрузки -->
+  <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+    <label class="block text-gray-700 mb-2">Загрузить новое фото</label>
+    <input
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="image/*"
+      class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-500 file:text-black hover:file:bg-yellow-600">
+
+    @if (uploading) {
+      <p class="text-yellow-600 mt-2">Загрузка...</p>
+    }
+  </div>
+
+  <!-- Сетка файлов -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    @for (file of files; track file.id) {
+      <div class="bg-white p-2 rounded-lg shadow-md">
+        <img [src]="'http://localhost:8080' + file.url" [alt]="file.originalName" class="w-full h-48 object-cover rounded">
+        <p class="text-sm text-gray-600 mt-2 truncate">{{ file.originalName }}</p>
+      </div>
+    }
+  </div>
+</div>
