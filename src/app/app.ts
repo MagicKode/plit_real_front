@@ -8,6 +8,7 @@ import { ContactsComponent } from './components/contacts/contacts';
 import { PortfolioComponent } from './components/portfolio/portfolio';
 import { PricesComponent } from './components/prices/prices';
 import { ReviewsComponent } from './components/reviews/reviews';
+import { PortfolioCategoriesComponent } from './components/portfolio-categories/portfolio-categories';
 
 @Component({
   selector: 'app-root',
@@ -17,10 +18,12 @@ import { ReviewsComponent } from './components/reviews/reviews';
     HeroComponent,
     ServicesComponent,
     AboutComponent,
+    PortfolioComponent,
     ContactsComponent,
     PortfolioComponent,
     PricesComponent,
     ReviewsComponent,
+    PortfolioCategoriesComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',

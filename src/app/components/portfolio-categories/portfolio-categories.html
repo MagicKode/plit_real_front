@@ -1,0 +1,61 @@
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
+      Мои работы
+    </h2>
+
+    <!-- УРОВЕНЬ 1: Сетка категорий -->
+    @if (!activeCategory) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (category of categories; track category.id) {
+          <div
+            class="relative group overflow-hidden rounded-lg shadow-md cursor-pointer h-80"
+            (click)="openCategory(category)">
+            <img [src]="category.coverImage" [alt]="category.name" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+
+            <!-- Затемнение и название при наведении -->
+            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+              <span class="text-white font-bold text-2xl">{{ category.name }}</span>
+            </div>
+
+            <!-- Название всегда видно внизу -->
+            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+              <span class="text-white font-bold text-lg">{{ category.name }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- УРОВЕНЬ 2: Сетка фото внутри категории -->
+    @if (activeCategory) {
+      <div class="mb-6 flex items-center justify-between">
+        <h3 class="text-2xl font-bold text-gray-800">{{ activeCategory.name }}</h3>
+        <button (click)="closeCategory()" class="text-gray-500 hover:text-gray-800 font-bold">
+          ← Назад к категориям
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (work of activeCategory.works; track work.id) {
+          <div
+            class="relative group overflow-hidden rounded-lg shadow-md cursor-pointer"
+            (click)="openImage(work.imageUrl)">
+            <img [src]="work.imageUrl" [alt]="work.title" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+              <span class="text-white font-bold text-lg">{{ work.title }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>
+
+<!-- УРОВЕНЬ 3: Lightbox (просмотр фото) -->
+@if (selectedImage) {
+  <div class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4" (click)="closeImage()">
+    <img [src]="selectedImage" class="max-w-full max-h-full rounded-lg shadow-2xl" alt="Просмотр работы">
+    <button class="absolute top-4 right-4 text-white text-4xl font-bold" (click)="closeImage()">&times;</button>
+  </div>
+}
