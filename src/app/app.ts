@@ -5,7 +5,6 @@ import { HeroComponent } from './components/hero/hero';
 import { ServicesComponent } from './components/services/services';
 import { AboutComponent } from './components/about/about';
 import { ContactsComponent } from './components/contacts/contacts';
-import { PortfolioComponent } from './components/portfolio/portfolio';
 import { PricesComponent } from './components/prices/prices';
 import { ReviewsComponent } from './components/reviews/reviews';
 import { PortfolioCategoriesComponent } from './components/portfolio-categories/portfolio-categories';
@@ -18,9 +17,7 @@ import { PortfolioCategoriesComponent } from './components/portfolio-categories/
     HeroComponent,
     ServicesComponent,
     AboutComponent,
-    PortfolioComponent,
     ContactsComponent,
-    PortfolioComponent,
     PricesComponent,
     ReviewsComponent,
     PortfolioCategoriesComponent,
