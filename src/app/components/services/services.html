@@ -1,4 +1,12 @@
-<section class="py-20 bg-gray-100/80">
+<section class="py-20 bg-gray-100/80 relative">
+
+  <!-- Кнопка редактирования (только для мастера) -->
+  @if (authService.isLoggedIn()) {
+    <button (click)="editServices()" class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1 rounded text-sm transition z-10">
+      ✎ Редактировать
+    </button>
+  }
+
   <div class="container mx-auto px-4">
     <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
       Мои услуги
@@ -14,4 +22,13 @@
       }
     </div>
   </div>
+
+  <!-- Модалка редактирования -->
+  @if (isEditModalOpen) {
+    <app-services-edit-modal
+      [services]="services"
+      (save)="onSaveServices($event)"
+      (close)="onCloseServicesModal()">
+    </app-services-edit-modal>
+  }
 </section>
