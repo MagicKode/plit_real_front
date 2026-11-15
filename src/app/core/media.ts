@@ -6,11 +6,13 @@ export interface MediaFile {
   id: number;
   url: string;
   originalName: string;
+  category: string;
 }
 
 export interface UploadResponse {
   id: number;
   url: string;
+  category: string;
 }
 
 @Injectable({
@@ -21,13 +23,18 @@ export class MediaService {
 
   constructor(private http: HttpClient) {}
 
-  uploadFile(file: File): Observable<UploadResponse> {
+  uploadFile(file: File, category: string): Observable<UploadResponse> {
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('category', category);
     return this.http.post<UploadResponse>(`${this.apiUrl}/upload`, formData);
   }
 
   getAllFiles(): Observable<MediaFile[]> {
     return this.http.get<MediaFile[]>(this.apiUrl);
+  }
+
+  deleteFile(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

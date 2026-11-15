@@ -1,0 +1,50 @@
+<div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" (click)="onClose()">
+  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-lg" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold text-gray-800">Редактировать "О мастере"</h2>
+      <button (click)="onClose()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+    </div>
+
+    <!-- Фото -->
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">Фото мастера</label>
+      <div class="flex items-center gap-4">
+        @if (photoUrl) {
+          <img [src]="'http://localhost:8080' + photoUrl" alt="Фото" class="w-20 h-20 object-cover rounded">
+        }
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-500 file:text-black hover:file:bg-yellow-600">
+      </div>
+      @if (uploading) {
+        <p class="text-yellow-600 text-sm mt-1">Загрузка...</p>
+      }
+    </div>
+
+    <!-- Имя -->
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">Имя мастера</label>
+      <input type="text" [(ngModel)]="masterName" class="w-full p-2 border rounded">
+    </div>
+
+    <!-- Опыт -->
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">Опыт работы</label>
+      <input type="text" [(ngModel)]="experience" class="w-full p-2 border rounded">
+    </div>
+
+    <!-- Описание -->
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-2">Описание</label>
+      <textarea [(ngModel)]="description" rows="4" class="w-full p-2 border rounded"></textarea>
+    </div>
+
+    <!-- Кнопки -->
+    <div class="flex justify-end gap-2">
+      <button (click)="onClose()" class="px-4 py-2 border rounded hover:bg-gray-100">Отмена</button>
+      <button (click)="onSave()" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded">Сохранить</button>
+    </div>
+  </div>
+</div>

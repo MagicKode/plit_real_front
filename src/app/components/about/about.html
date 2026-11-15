@@ -1,7 +1,8 @@
 <section class="py-20 bg-white/80 relative">
   <!-- Кнопка редактирования (только для мастера) -->
   @if (authService.isLoggedIn()) {
-    <button (click)="editAbout()" class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1 rounded text-sm transition z-10">
+    <button (click)="editAbout()"
+            class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1 rounded text-sm transition z-10">
       ✎ Редактировать
     </button>
   }
@@ -10,7 +11,8 @@
 
     <!-- Фото мастера -->
     <div class="w-full md:w-1/3 flex justify-center">
-      <img src="master.jpeg" alt="Мастер Александр" class="w-full max-w-xs md:max-w-sm h-auto rounded-lg shadow-lg object-cover">
+      <img [src]="photoUrl.startsWith('/uploads') ? 'http://localhost:8080' + photoUrl : photoUrl"
+           alt="Мастер Александр" class="w-full max-w-xs md:max-w-sm h-auto rounded-lg shadow-lg object-cover">
     </div>
 
     <!-- Текст -->
@@ -24,10 +26,23 @@
       <p class="text-gray-900 font-medium mb-6 leading-relaxed drop-shadow-sm">
         {{ description }}
       </p>
-      <a href="tel:+375255009052" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4 rounded-full transition shadow-lg transform hover:scale-105">
+      <a href="tel:+375255009052"
+         class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-bold text-lg px-8 py-4 rounded-full transition shadow-lg transform hover:scale-105">
         📞 Позвонить
       </a>
     </div>
 
   </div>
+
+  <!-- Модалка редактирования -->
+  @if (isEditModalOpen) {
+    <app-about-edit-modal
+      [masterName]="masterName"
+      [experience]="experience"
+      [description]="description"
+      [currentPhotoUrl]="photoUrl"
+      (save)="onSaveAbout($event)"
+      (close)="onCloseAboutModal()">
+    </app-about-edit-modal>
+  }
 </section>

@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MediaService, MediaFile } from '../../core/media';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-gallery',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin-gallery.html',
   styleUrl: './admin-gallery.css'
 })
 export class AdminGalleryComponent implements OnInit {
   files: MediaFile[] = [];
   uploading = false;
+  selectedCategory: string = 'bathroom';
 
   constructor(private mediaService: MediaService) {}
 
@@ -30,7 +32,7 @@ export class AdminGalleryComponent implements OnInit {
     if (!file) return;
 
     this.uploading = true;
-    this.mediaService.uploadFile(file).subscribe({
+    this.mediaService.uploadFile(file, this.selectedCategory).subscribe({
       next: () => {
         this.uploading = false;
         this.loadFiles();
@@ -40,5 +42,15 @@ export class AdminGalleryComponent implements OnInit {
         console.error('Ошибка загрузки', err);
       }
     });
+  }
+
+
+  // --- Удаление файла ---
+  deleteFile(id: number): void {
+    if (confirm('Удалить это фото?')) {
+      this.mediaService.deleteFile(id).subscribe(() => {
+        this.loadFiles(); // Обновляем список после удаления
+      });
+    }
   }
 }
