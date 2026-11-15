@@ -12,5 +12,11 @@
 <app-prices id="prices"></app-prices>
 <app-reviews id="reviews"></app-reviews>
 <app-contacts id="contacts"></app-contacts>
-<router-outlet></router-outlet>
+
+<!--<router-outlet></router-outlet>-->
+
+  @if (authService.loginModalOpen$ | async) {
+    <app-login-modal></app-login-modal>
+  }
+
 </div>

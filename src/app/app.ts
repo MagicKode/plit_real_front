@@ -8,23 +8,29 @@ import { ContactsComponent } from './components/contacts/contacts';
 import { PricesComponent } from './components/prices/prices';
 import { ReviewsComponent } from './components/reviews/reviews';
 import { PortfolioCategoriesComponent } from './components/portfolio-categories/portfolio-categories';
+import { LoginModalComponent } from './components/login-modal/login-modal';
+import { AsyncPipe } from '@angular/common';
+import { AuthService } from './core/auth';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
+    AsyncPipe,
     HeaderComponent,
     HeroComponent,
     ServicesComponent,
     AboutComponent,
-    ContactsComponent,
+    PortfolioCategoriesComponent,
     PricesComponent,
     ReviewsComponent,
-    PortfolioCategoriesComponent,
+    ContactsComponent,
+    LoginModalComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   title = signal('plit-real-front');
+  constructor(public authService: AuthService) {}
 }

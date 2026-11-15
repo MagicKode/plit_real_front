@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { AuthService } from '../../core/auth';
 
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './contacts.html',
   styleUrl: './contacts.css',
 })
@@ -13,4 +13,6 @@ export class ContactsComponent {
   telegram: string = 'https://t.me/ваш_ник';
   viber: string = 'viber://chat?number=%2B375255009052';
   address: string = 'Минск и Минский район';
+
+  constructor(public authService: AuthService) {}
 }
