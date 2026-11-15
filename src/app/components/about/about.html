@@ -1,4 +1,11 @@
-<section class="py-20 bg-white/80">
+<section class="py-20 bg-white/80 relative">
+  <!-- Кнопка редактирования (только для мастера) -->
+  @if (authService.isLoggedIn()) {
+    <button (click)="editAbout()" class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1 rounded text-sm transition z-10">
+      ✎ Редактировать
+    </button>
+  }
+
   <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
 
     <!-- Фото мастера -->

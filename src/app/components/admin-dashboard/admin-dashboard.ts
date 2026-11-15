@@ -14,9 +14,7 @@ export class AdminDashboardComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   logout() {
-    this.authService.logout();
-    // this.router.navigate(['/admin/login']);
-    // this.router.navigate(['/']);
+    this.authService.logout()
     window.location.reload();  // Перезагружаем страницу
   }
 }
