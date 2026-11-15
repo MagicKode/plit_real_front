@@ -22,6 +22,12 @@
 
     <!-- Контакты (телефон + иконки) -->
     <div class="hidden sm:flex items-center gap-4 shrink-0">
+      @if (authService.isLoggedIn()) {
+        <div class="bg-yellow-500 text-black text-xs px-3 py-1 rounded-full flex items-center gap-2">
+          <span>Режим мастера</span>
+          <button (click)="logout()" class="underline hover:no-underline font-bold">Выйти</button>
+        </div>
+      }
       <a href="tel:+375255009052" class="text-sm lg:text-lg font-semibold hover:text-yellow-500 transition whitespace-nowrap">
         +375 (25) 500-90-52
       </a>
