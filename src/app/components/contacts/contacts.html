@@ -1,4 +1,11 @@
-<section class="py-20 bg-gray-900/90 text-white">
+<section class="py-20 bg-gray-900/90 text-white relative">
+  <!-- Кнопка редактирования -->
+  @if (authService.isLoggedIn()) {
+    <button (click)="editContacts()" class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1 rounded text-sm transition z-10">
+      ✎ Редактировать
+    </button>
+  }
+
   <div class="container mx-auto px-4 text-center">
     <h2 class="text-3xl md:text-4xl font-bold mb-8">Свяжитесь со мной</h2>
 
@@ -26,4 +33,16 @@
       </p>
     </div>
   </div>
+
+  <!-- Модалка редактирования -->
+  @if (isEditModalOpen) {
+    <app-contacts-edit-modal
+      [phone]="phone"
+      [telegram]="telegram"
+      [viber]="viber"
+      [address]="address"
+      (save)="onSaveContacts($event)"
+      (close)="onCloseContactsModal()">
+    </app-contacts-edit-modal>
+  }
 </section>

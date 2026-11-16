@@ -15,7 +15,7 @@ import { AuthService } from './core/auth';
 @Component({
   selector: 'app-root',
   imports: [
-    RouterOutlet,
+    // RouterOutlet,
     AsyncPipe,
     HeaderComponent,
     HeroComponent,

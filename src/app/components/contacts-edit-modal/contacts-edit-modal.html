@@ -1,0 +1,45 @@
+<div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" (click)="onClose()">
+  <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-lg" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold text-gray-800">Редактировать контакты</h2>
+      <button (click)="onClose()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2">Телефон</label>
+      <input
+        type="text"
+        [(ngModel)]="editablePhone"
+        class="w-full p-3 border-2 border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:bg-white outline-none transition">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2">Telegram (ссылка)</label>
+      <input
+        type="text"
+        [(ngModel)]="editableTelegram"
+        class="w-full p-3 border-2 border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:bg-white outline-none transition">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2">Viber (ссылка)</label>
+      <input
+        type="text"
+        [(ngModel)]="editableViber"
+        class="w-full p-3 border-2 border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:bg-white outline-none transition">
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 font-medium mb-2">Адрес / География</label>
+      <input
+        type="text"
+        [(ngModel)]="editableAddress"
+        class="w-full p-3 border-2 border-gray-300 rounded-lg bg-gray-50 text-gray-900 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-200 focus:bg-white outline-none transition">
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <button (click)="onClose()" class="px-4 py-2 border rounded hover:bg-gray-100">Отмена</button>
+      <button (click)="onSave()" class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded">Сохранить</button>
+    </div>
+  </div>
+</div>
