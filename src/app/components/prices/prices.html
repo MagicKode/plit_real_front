@@ -1,4 +1,11 @@
-<section class="py-20 bg-white/80">
+<section class="py-20 bg-white relative">
+  <!-- Кнопка редактирования -->
+  @if (authService.isLoggedIn()) {
+    <button (click)="editPrices()" class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1 rounded text-sm transition z-10">
+      ✎ Редактировать
+    </button>
+  }
+
   <div class="container mx-auto px-4">
     <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
       Расценки на услуги
@@ -19,4 +26,13 @@
       * Точная стоимость зависит от объема и сложности работ. Позвоните для бесплатной консультации.
     </p>
   </div>
+
+  <!-- Модалка редактирования -->
+  @if (isEditModalOpen) {
+    <app-prices-edit-modal
+      [prices]="prices"
+      (save)="onSavePrices($event)"
+      (close)="onClosePricesModal()">
+    </app-prices-edit-modal>
+  }
 </section>

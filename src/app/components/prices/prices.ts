@@ -1,17 +1,14 @@
 import { Component } from '@angular/core';
-
-interface PriceItem {
-  service: string;
-  price: string;
-  unit: string;
-}
+import { AuthService } from '../../core/auth';
+import { CommonModule } from '@angular/common';
+import { PricesEditModalComponent, PriceItem } from '../prices-edit-modal/prices-edit-modal';
 
 @Component({
   selector: 'app-prices',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, PricesEditModalComponent],
   templateUrl: './prices.html',
-  styleUrl: './prices.css',
+  styleUrl: './prices.css'
 })
 export class PricesComponent {
   prices: PriceItem[] = [
@@ -24,4 +21,21 @@ export class PricesComponent {
     { service: 'Стяжка пола', price: 'от 15', unit: 'руб/м²' },
     { service: 'Гидроизоляция', price: 'от 12', unit: 'руб/м²' },
   ];
+
+  isEditModalOpen = false;
+
+  constructor(public authService: AuthService) {}
+
+  editPrices() {
+    this.isEditModalOpen = true;
+  }
+
+  onSavePrices(updatedPrices: PriceItem[]) {
+    this.prices = updatedPrices;
+    this.isEditModalOpen = false;
+  }
+
+  onClosePricesModal() {
+    this.isEditModalOpen = false;
+  }
 }
