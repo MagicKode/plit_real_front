@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../core/auth';
 
 interface Review {
   name: string;
@@ -16,6 +17,7 @@ interface Review {
   styleUrl: './reviews.css',
 })
 export class ReviewsComponent {
+
   reviews: Review[] = [
     {
       name: 'Вадим',
@@ -35,11 +37,13 @@ export class ReviewsComponent {
   newText: string = '';
   newRating: number = 5;
 
-  stars: number[] = [1, 2, 3, 4, 5];
+  stars: number[] = Array.from({ length: 5 }, (_, i) => i + 1);
 
   setRating(value: number) {
     this.newRating = value;
   }
+
+  constructor(public authService: AuthService) {}
 
   addReview() {
     if (this.newName.trim() && this.newText.trim()) {
