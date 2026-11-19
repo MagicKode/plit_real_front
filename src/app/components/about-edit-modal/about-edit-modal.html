@@ -10,7 +10,8 @@
       <label class="block text-gray-700 mb-2">Фото мастера</label>
       <div class="flex items-center gap-4">
         @if (photoUrl) {
-          <img [src]="'http://localhost:8080' + photoUrl" alt="Фото" class="w-20 h-20 object-cover rounded">
+          <img [src]="photoUrl.startsWith('/uploads') ? 'http://localhost:8080' + photoUrl : photoUrl"
+               alt="Фото" class="w-20 h-20 object-cover rounded">
         }
         <input
           type="file"
