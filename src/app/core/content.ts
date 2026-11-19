@@ -25,6 +25,14 @@ interface BackendPriceItem {
   currency: string;
 }
 
+export interface ContactInfo {
+  id?: number;
+  phone: string;
+  telegram: string;
+  viber: string;
+  address: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -57,8 +65,8 @@ export class ContentService {
           service: item.serviceName,
           price: item.price,
           unit: item.currency || 'руб/м²',
-        }))
-      )
+        })),
+      ),
     );
   }
 
@@ -80,8 +88,16 @@ export class ContentService {
           service: item.serviceName,
           price: item.price,
           unit: item.currency || 'руб/м²',
-        }))
-      )
+        })),
+      ),
     );
+  }
+
+  getContacts(): Observable<ContactInfo> {
+    return this.http.get<ContactInfo>(`${this.apiUrl}/contacts`);
+  }
+
+  updateContacts(data: ContactInfo): Observable<ContactInfo> {
+    return this.http.put<ContactInfo>(`${this.apiUrl}/contacts`, data);
   }
 }
