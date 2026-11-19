@@ -8,6 +8,13 @@ export interface PriceItem {
   unit: string;
 }
 
+export interface PriceItem {
+  id?: number; // Добавьте эту строку
+  service: string;
+  price: string;
+  unit: string;
+}
+
 @Component({
   selector: 'app-prices-edit-modal',
   standalone: true,

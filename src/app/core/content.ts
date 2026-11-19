@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ServiceItem } from '../components/services-edit-modal/services-edit-modal';
 
 export interface AboutInfo {
@@ -9,6 +9,20 @@ export interface AboutInfo {
   experience: string;
   description: string;
   photoUrl: string;
+}
+
+export interface PriceItem {
+  id?: number;
+  service: string;
+  price: string;
+  unit: string;
+}
+
+interface BackendPriceItem {
+  id?: number;
+  serviceName: string;
+  price: string;
+  currency: string;
 }
 
 @Injectable({
@@ -33,5 +47,41 @@ export class ContentService {
 
   updateServices(services: ServiceItem[]): Observable<ServiceItem[]> {
     return this.http.put<ServiceItem[]>(`${this.apiUrl}/services`, services);
+  }
+
+  getPrices(): Observable<PriceItem[]> {
+    return this.http.get<BackendPriceItem[]>(`${this.apiUrl}/prices`).pipe(
+      map((items) =>
+        items.map((item) => ({
+          id: item.id,
+          service: item.serviceName,
+          price: item.price,
+          unit: item.currency || 'руб/м²',
+        }))
+      )
+    );
+  }
+
+  updatePrices(prices: PriceItem[]): Observable<PriceItem[]> {
+    // Преобразуем модели фронтенда в формат PriceEntity для Spring Boot
+    const payload: BackendPriceItem[] = prices
+      .filter((p) => p.service.trim() !== '')
+      .map((p) => ({
+        id: p.id,
+        serviceName: p.service,
+        price: p.price,
+        currency: p.unit,
+      }));
+
+    return this.http.put<BackendPriceItem[]>(`${this.apiUrl}/prices`, payload).pipe(
+      map((items) =>
+        items.map((item) => ({
+          id: item.id,
+          service: item.serviceName,
+          price: item.price,
+          unit: item.currency || 'руб/м²',
+        }))
+      )
+    );
   }
 }

@@ -12,10 +12,13 @@
     </h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-      @for (item of prices; track item.service) {
-        <div class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center border-l-4 border-yellow-500">
-          <span class="text-gray-800 font-medium">{{ item.service }}</span>
-          <span class="text-yellow-600 font-bold whitespace-nowrap ml-4">
+      @for (item of prices; track item.id ?? $index) {
+        <div class="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition flex justify-between items-center border border-gray-200 border-l-4 border-l-yellow-500">
+          <!-- Наименование работы -->
+          <span class="text-gray-900 font-semibold text-base">{{ item.service }}</span>
+
+          <!-- Выделенный бейдж цены -->
+          <span class="bg-yellow-500/15 text-gray-900 border border-yellow-500/40 px-3 py-1 rounded-md font-bold text-sm md:text-base whitespace-nowrap ml-4">
             {{ item.price }} {{ item.unit }}
           </span>
         </div>
