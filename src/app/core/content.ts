@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ServiceItem } from '../components/services-edit-modal/services-edit-modal';
 
 export interface AboutInfo {
   id?: number;
@@ -24,5 +25,13 @@ export class ContentService {
 
   updateAbout(data: AboutInfo): Observable<AboutInfo> {
     return this.http.put<AboutInfo>(`${this.apiUrl}/about`, data);
+  }
+
+  getServices(): Observable<ServiceItem[]> {
+    return this.http.get<ServiceItem[]>(`${this.apiUrl}/services`);
+  }
+
+  updateServices(services: ServiceItem[]): Observable<ServiceItem[]> {
+    return this.http.put<ServiceItem[]>(`${this.apiUrl}/services`, services);
   }
 }

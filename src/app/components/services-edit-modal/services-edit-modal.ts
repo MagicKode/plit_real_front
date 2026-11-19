@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 export interface ServiceItem {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   icon: string;
+  isNew?: boolean;
 }
 
 @Component({
@@ -21,7 +22,7 @@ export class ServicesEditModalComponent implements OnInit {
   @Output() save = new EventEmitter<ServiceItem[]>();
   @Output() close = new EventEmitter<void>();
 
-  editableServices: ServiceItem[] = []; // <-- ВОТ ОНА
+  editableServices: ServiceItem[] = [];
 
   ngOnInit() {
     this.editableServices = this.services.map(s => ({ ...s }));
@@ -32,7 +33,8 @@ export class ServicesEditModalComponent implements OnInit {
       id: Date.now(),
       title: '',
       description: '',
-      icon: '🧱'
+      icon: '🧱',
+      isNew: true
     });
   }
 
@@ -41,7 +43,15 @@ export class ServicesEditModalComponent implements OnInit {
   }
 
   onSave() {
-    this.save.emit(this.editableServices);
+    // Убираем временные ID у новых записей, чтобы JPA выполнил INSERT вместо MERGE
+    const payload: ServiceItem[] = this.editableServices
+      .filter(s => s.title.trim() !== '') // заодно отсекаем пустые карточки
+      .map(({ isNew, id, ...rest }) => ({
+        ...rest,
+        id: isNew ? undefined : id
+      }));
+
+    this.save.emit(payload);
   }
 
   onClose() {
