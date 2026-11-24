@@ -11,8 +11,18 @@
 
     <!-- Фото мастера -->
     <div class="w-full md:w-1/3 flex justify-center">
-      <img [src]="photoUrl.startsWith('/uploads') ? 'http://localhost:8080' + photoUrl : photoUrl"
-           alt="Мастер Александр" class="w-full max-w-xs md:max-w-sm h-auto rounded-lg shadow-lg object-cover">
+      @if (photoUrl) {
+        <img [src]="photoUrl.startsWith('/uploads') ? 'http://localhost:8080' + photoUrl : photoUrl"
+             alt="Фото мастера" class="w-full max-w-xs md:max-w-sm h-auto rounded-xl shadow-lg object-cover">
+      } @else {
+        <div class="w-full max-w-xs md:max-w-sm h-80 rounded-xl border-2 border-dashed border-yellow-500/70 bg-gray-900/85 backdrop-blur-xs shadow-lg flex flex-col items-center justify-center p-6 text-center">
+          <div class="w-16 h-16 rounded-full bg-yellow-500/15 border border-yellow-500/40 flex items-center justify-center text-3xl mb-3">
+            👷‍♂️
+          </div>
+          <span class="text-white font-semibold text-base">Фото мастера</span>
+          <span class="text-gray-400 text-xs mt-1">Загрузите изображение в режиме редактирования</span>
+        </div>
+      }
     </div>
 
     <!-- Текст -->

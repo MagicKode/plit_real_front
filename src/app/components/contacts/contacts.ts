@@ -12,10 +12,10 @@ import { ContactInfo, ContentService } from '../../core/content';
   styleUrl: './contacts.css'
 })
 class ContactsComponent implements OnInit{
-  phone: string = '+375 (25) 500-90-52';
-  telegram: string = 'https://t.me/ваш_ник';
-  viber: string = 'viber://chat?number=%2B375255009052';
-  address: string = 'Минск и Минский район';
+  phone: string = '';
+  telegram: string = '';
+  viber: string = '';
+  address: string = '';
 
   isEditModalOpen = false;
 

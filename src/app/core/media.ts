@@ -6,7 +6,8 @@ export interface MediaFile {
   id: number;
   url: string;
   originalName: string;
-  category: string;
+  category?: string;
+  title?: string;
 }
 
 export interface UploadResponse {
@@ -15,26 +16,56 @@ export interface UploadResponse {
   category: string;
 }
 
+export interface PortfolioWork {
+  id: number;
+  url: string;
+  originalName?: string;
+  category?: string;
+  title?: string;
+}
+
+export interface PortfolioCategory {
+  id: number;
+  name: string;
+  coverImage: string;
+  works: PortfolioWork[];
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MediaService {
-  private apiUrl = 'http://localhost:8080/api/v1/media';
+  private baseUrl = 'http://localhost:8080/api/v1';
 
   constructor(private http: HttpClient) {}
 
-  uploadFile(file: File, category: string): Observable<UploadResponse> {
+  uploadFile(file: File, category: string, title?: string): Observable<UploadResponse> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('category', category);
-    return this.http.post<UploadResponse>(`${this.apiUrl}/upload`, formData);
+    if (title) {
+      formData.append('title', title);
+    }
+    return this.http.post<UploadResponse>(`${this.baseUrl}/media/upload`, formData);
   }
 
   getAllFiles(): Observable<MediaFile[]> {
-    return this.http.get<MediaFile[]>(this.apiUrl);
+    return this.http.get<MediaFile[]>(`${this.baseUrl}/media`);
   }
 
   deleteFile(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.baseUrl}/media/${id}`);
+  }
+
+  getCategories(): Observable<PortfolioCategory[]> {
+    return this.http.get<PortfolioCategory[]>(`${this.baseUrl}/portfolio/categories`);
+  }
+
+  createCategory(data: { name: string; coverImage: string }): Observable<PortfolioCategory> {
+    return this.http.post<PortfolioCategory>(`${this.baseUrl}/portfolio/categories`, data);
+  }
+
+  deleteCategory(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/portfolio/categories/${id}`);
   }
 }

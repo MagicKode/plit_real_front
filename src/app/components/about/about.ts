@@ -11,12 +11,11 @@ import { AboutInfo, ContentService } from '../../core/content';
   styleUrl: './about.css',
 })
 export class AboutComponent {
-  @Input() masterName: string = 'Александр';
-  @Input() experience: string = '10 лет';
-  @Input() description: string =
-    'Профессиональный плиточник и сантехник. Работаю официально (ИП). Аккуратно, в срок, с гарантией.';
+  @Input() masterName: string = '';
+  @Input() experience: string = '';
+  @Input() description: string = '';
 
-  photoUrl: string = 'master.jpeg'; // Путь к фото
+  photoUrl: string = ''; // Путь к фото
   isEditModalOpen = false;
 
   constructor(
@@ -51,10 +50,11 @@ export class AboutComponent {
   onSaveAbout(data: AboutInfo) {
     this.contentService.updateAbout(data).subscribe({
       next: (saved) => {
-        this.masterName = data.masterName;
-        this.experience = data.experience;
-        this.description = data.description;
-        this.photoUrl = data.photoUrl;
+        const result = saved || data;
+        this.masterName = result.masterName;
+        this.experience = result.experience;
+        this.description = result.description;
+        this.photoUrl = result.photoUrl;
         this.isEditModalOpen = false;
         this.cdr.detectChanges();
       },

@@ -10,6 +10,7 @@ import { LoginModalComponent } from './components/login-modal/login-modal';
 import { AsyncPipe } from '@angular/common';
 import { AuthService } from './core/auth';
 import ContactsComponent from './components/contacts/contacts';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ import ContactsComponent from './components/contacts/contacts';
     ReviewsComponent,
     ContactsComponent,
     LoginModalComponent,
+    RouterOutlet,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',

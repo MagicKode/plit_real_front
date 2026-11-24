@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MediaService, MediaFile } from '../../core/media';
+import { MediaFile, MediaService } from '../../core/media';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
