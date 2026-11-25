@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { AuthService } from '../../core/auth';
 import { AboutEditModalComponent } from '../about-edit-modal/about-edit-modal';
 import { AboutInfo, ContentService } from '../../core/content';
@@ -22,24 +22,22 @@ export class AboutComponent {
     public authService: AuthService,
     private contentService: ContentService,
     private cdr: ChangeDetectorRef,
-  ) {}
-
-  ngOnInit() {
-    // Загружаем актуальные данные из PostgreSQL при инициализации компонента
-    this.contentService.getAbout().subscribe({
-      next: (data) => {
-        if (data) {
-          this.masterName = data.masterName || this.masterName;
-          this.experience = data.experience || this.experience;
-          this.description = data.description || this.description;
-          if (data.photoUrl) {
-            this.photoUrl = data.photoUrl;
+  ) {
+    afterNextRender(() => {
+      this.contentService.getAbout().subscribe({
+        next: (data) => {
+          if (data) {
+            this.masterName = data.masterName || this.masterName;
+            this.experience = data.experience || this.experience;
+            this.description = data.description || this.description;
+            if (data.photoUrl) {
+              this.photoUrl = data.photoUrl;
+            }
+            this.cdr.detectChanges();
           }
-          // Обновляем view после асинхронного HTTP-ответа
-          this.cdr.detectChanges();
-        }
-      },
-      error: (err) => console.error('Ошибка загрузки блока "О мастере":', err),
+        },
+        error: (err) => console.error('Ошибка загрузки блока "О мастере":', err),
+      });
     });
   }
 

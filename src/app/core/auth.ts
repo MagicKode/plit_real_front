@@ -1,6 +1,6 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { afterNextRender, Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 
 export interface LoginRequest {
@@ -13,12 +13,13 @@ export interface AuthResponse {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/v1/auth';
   private TOKEN_KEY = 'plitreal_token';
   private isBrowser: boolean;
+  private hydrated = signal(false);
 
   // Состояние модалки (открыта/закрыта)
   private loginModalOpen = new BehaviorSubject<boolean>(false);
@@ -26,19 +27,23 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
+    @Inject(PLATFORM_ID) platformId: Object,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
+
+    afterNextRender(() => {
+      setTimeout(() => this.hydrated.set(true));
+    });
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => {
+      tap((response) => {
         if (this.isBrowser) {
           localStorage.setItem(this.TOKEN_KEY, response.token);
         }
         this.closeLoginModal(); // Закрываем модалку после входа
-      })
+      }),
     );
   }
 
@@ -56,6 +61,9 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
+    if (!this.isBrowser || !this.hydrated) {
+      return false;
+    }
     return !!this.getToken();
   }
 

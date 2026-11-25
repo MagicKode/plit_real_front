@@ -33,6 +33,14 @@ export interface ContactInfo {
   address: string;
 }
 
+export interface HeroInfo {
+  id?: number;
+  title: string;
+  subtitle: string;
+  buttonText: string;
+  backgroundUrl: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -40,6 +48,14 @@ export class ContentService {
   private apiUrl = 'http://localhost:8080/api/v1';
 
   constructor(private http: HttpClient) {}
+
+  getHero(): Observable<HeroInfo> {
+    return this.http.get<HeroInfo>(`${this.apiUrl}/hero`);
+  }
+
+  updateHero(data: HeroInfo): Observable<HeroInfo> {
+    return this.http.put<HeroInfo>(`${this.apiUrl}/hero`, data);
+  }
 
   getAbout(): Observable<AboutInfo> {
     return this.http.get<AboutInfo>(`${this.apiUrl}/about`);

@@ -3,7 +3,7 @@
   @if (authService.isLoggedIn()) {
     <button
       (click)="openAddCategoryModal()"
-      class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1.5 rounded text-sm transition z-10 shadow">
+      class="absolute top-4 right-4 bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3 py-1.5 rounded text-sm transition z-10 shadow cursor-pointer">
       + Добавить категорию
     </button>
   }
@@ -13,157 +13,113 @@
       Мои работы
     </h2>
 
-    <!-- УРОВЕНЬ 1: Сетка категорий (всегда видна на странице) -->
+    <!-- УРОВЕНЬ 1: Сетка категорий -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       @for (category of categories; track category.id) {
         <div
           class="relative group overflow-hidden rounded-lg shadow-md cursor-pointer h-80"
           (click)="openCategory(category)">
-          <img [src]="getFullImageUrl(category.coverImage)" [alt]="category.name" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+          <img [src]="getFullImageUrl(category.coverImage)" [alt]="category.name"
+               class="w-full h-full object-cover transition group-hover:scale-105">
+          <div
+            class="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition flex flex-col items-center justify-center p-4 text-center">
+            <h3 class="text-white font-bold text-2xl mb-1">{{ category.name }}</h3>
+            <span class="text-yellow-400 text-sm font-medium">{{ category.works.length || 0 }} фото</span>
+          </div>
 
-          <!-- Кнопка удаления категории (в режиме мастера) -->
+          <!-- Удаление категории (режим мастера) -->
           @if (authService.isLoggedIn()) {
             <button
               (click)="deleteCategory($event, category)"
-              title="Удалить категорию"
-              class="absolute top-3 right-3 z-20 w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center shadow-lg transition">
+              class="absolute top-2 right-2 w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center transition shadow z-10 cursor-pointer">
               &times;
             </button>
           }
-
-          <!-- Затемнение и название при наведении -->
-          <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-            <span class="text-white font-bold text-2xl">{{ category.name }}</span>
-          </div>
-
-          <!-- Название и счетчик фото внизу -->
-          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex justify-between items-end">
-            <span class="text-white font-bold text-lg">{{ category.name }}</span>
-            <span class="text-gray-300 text-sm">{{ category.works.length }} фото</span>
-          </div>
         </div>
       }
     </div>
   </div>
 
-  <!-- УРОВЕНЬ 2: Оверлей (модалка) с фото выбранной категории поверх страницы -->
+  <!-- УРОВЕНЬ 2: Модалка выбранной категории -->
   @if (activeCategory) {
-    <div
-      class="fixed inset-0 bg-black/70 backdrop-blur-xs z-40 flex items-center justify-center p-4"
-      (click)="closeCategory()">
-      <div
-        class="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden"
-        (click)="$event.stopPropagation()">
-
-        <!-- Шапка модалки категории -->
-        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between gap-4 bg-gray-50">
+    <div (click)="closeCategory()"
+         class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div (click)="$event.stopPropagation()"
+           class="bg-white rounded-xl max-w-5xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
+        <div class="flex flex-wrap justify-between items-center gap-4 mb-6 pr-8">
           <div class="flex items-center gap-3">
-            <h3 class="text-xl md:text-2xl font-bold text-gray-800">{{ activeCategory.name }}</h3>
-            <span class="text-sm text-gray-500 bg-gray-200 px-2.5 py-0.5 rounded-full">
-              {{ activeCategory.works.length }} фото
+            <h3 class="text-2xl font-bold text-gray-900">{{ activeCategory.name }}</h3>
+            <span class="px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600 text-sm">
+              {{ activeCategory.works.length || 0 }} фото
             </span>
           </div>
 
-          <div class="flex items-center gap-3">
-            <!-- Кнопка загрузки фото (только в режиме мастера) -->
-            @if (authService.isLoggedIn()) {
-              <label class="cursor-pointer bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-3.5 py-1.5 rounded text-sm transition inline-flex items-center gap-1.5 shadow-sm">
-                <span>{{ uploadingPhotos ? 'Загрузка...' : '+ Добавить фото' }}</span>
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  (change)="onPhotosSelected($event)"
-                  [disabled]="uploadingPhotos"
-                  class="hidden">
-              </label>
-            }
-
-            <!-- Крестик закрытия окна категории -->
-            <button
-              (click)="closeCategory()"
-              title="Закрыть"
-              class="w-9 h-9 rounded-full hover:bg-gray-200 text-gray-500 hover:text-gray-800 text-2xl font-bold flex items-center justify-center transition">
-              &times;
-            </button>
-          </div>
+          @if (authService.isLoggedIn()) {
+            <label
+              class="bg-yellow-500 hover:bg-yellow-600 text-black font-bold px-4 py-2 rounded-lg text-sm transition cursor-pointer">
+              + Добавить фото
+              <input type="file" multiple (change)="onPhotosSelected($event)" accept="image/*" class="hidden">
+            </label>
+          }
         </div>
 
-        <!-- Тело модалки: прокручиваемая сетка фотографий -->
-        <div class="p-6 overflow-y-auto">
-          @if (activeCategory.works.length === 0) {
-            <p class="text-center text-gray-500 py-16">В этой категории пока нет фотографий.</p>
-          } @else {
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              @for (work of activeCategory.works; track work.id) {
-                <div
-                  class="relative group overflow-hidden rounded-lg shadow-md cursor-pointer"
-                  (click)="openImage(work.url)">
-                  <img [src]="getFullImageUrl(work.url)" [alt]="work.title || activeCategory.name" class="w-full h-60 object-cover transition duration-500 group-hover:scale-105">
+        @if (uploadingPhotos) {
+          <p class="text-yellow-600 font-medium mb-4">Загрузка фотографий...</p>
+        }
 
-                  <!-- Кнопка удаления фото (в режиме мастера) -->
-                  @if (authService.isLoggedIn()) {
-                    <button
-                      (click)="deleteWork($event, work.id)"
-                      title="Удалить фото"
-                      class="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-red-600 hover:bg-red-700 text-white font-bold flex items-center justify-center shadow-lg transition">
-                      &times;
-                    </button>
-                  }
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          @for (work of activeCategory.works; track work.id; let idx = $index) {
+            <div (click)="openImage(work.url, idx)"
+                 class="relative group overflow-hidden rounded-lg shadow cursor-pointer h-60">
+              <img [src]="getFullImageUrl(work.url)" [alt]="activeCategory.name"
+                   class="w-full h-full object-cover transition group-hover:scale-105">
 
-                  <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                    <span class="text-white font-bold text-base">{{ work.title || activeCategory.name }}</span>
-                  </div>
-                </div>
+              @if (authService.isLoggedIn()) {
+                <button
+                  (click)="deleteWork($event, work.id)"
+                  class="absolute top-2 right-2 w-7 h-7 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold flex items-center justify-center transition shadow z-10 cursor-pointer">
+                  &times;
+                </button>
               }
             </div>
           }
         </div>
+
+        <button (click)="closeCategory()"
+                class="absolute top-4 right-4 text-gray-500 hover:text-gray-900 text-3xl leading-none cursor-pointer">
+          &times;
+        </button>
       </div>
     </div>
   }
 
-  <!-- Модалка создания новой категории -->
+  <!-- Модалка создания категории -->
   @if (isAddCategoryModalOpen) {
-    <div class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" (click)="closeAddCategoryModal()">
-      <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md" (click)="$event.stopPropagation()">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-xl font-bold text-gray-800">Новая категория работ</h3>
-          <button (click)="closeAddCategoryModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-gray-700 font-medium mb-2">Название категории</label>
-          <input
-            type="text"
-            [(ngModel)]="newCategoryName"
-            placeholder="Например: Ванная комната"
-            class="w-full p-2.5 border rounded-lg focus:border-yellow-500 outline-none">
-        </div>
-
-        <div class="mb-6">
-          <label class="block text-gray-700 font-medium mb-2">Обложка категории</label>
-          <div class="flex items-center gap-4">
-            @if (newCategoryCoverUrl) {
-              <img [src]="getFullImageUrl(newCategoryCoverUrl)" alt="Обложка" class="w-20 h-20 object-cover rounded border">
-            }
-            <input
-              type="file"
-              accept="image/*"
-              (change)="onCoverSelected($event)"
-              class="block w-full text-sm text-gray-500 file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:bg-yellow-500 file:text-black file:font-semibold hover:file:bg-yellow-600">
+    <div (click)="closeAddCategoryModal()" class="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
+      <div (click)="$event.stopPropagation()" class="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+        <h3 class="text-xl font-bold mb-4 text-gray-900">Новая категория</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Название</label>
+            <input type="text" [(ngModel)]="newCategoryName" placeholder="Например: Ванные комнаты"
+                   class="w-full border border-gray-300 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-yellow-500">
           </div>
-          @if (uploadingCover) {
-            <p class="text-yellow-600 text-sm mt-1">Загрузка обложки...</p>
-          }
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Обложка</label>
+            <input type="file" (change)="onCoverSelected($event)" accept="image/*"
+                   class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-yellow-500 file:text-black file:font-semibold">
+            @if (uploadingCover) {
+              <p class="text-sm text-yellow-600 mt-1">Загрузка обложки...</p>
+            }
+          </div>
         </div>
-
-        <div class="flex justify-end gap-2">
-          <button (click)="closeAddCategoryModal()" class="px-4 py-2 border rounded hover:bg-gray-100">Отмена</button>
-          <button
-            (click)="saveNewCategory()"
-            [disabled]="!newCategoryName.trim() || !newCategoryCoverUrl || uploadingCover"
-            class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 disabled:opacity-50 text-black font-bold rounded">
+        <div class="flex justify-end gap-3 mt-6">
+          <button (click)="closeAddCategoryModal()"
+                  class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100">Отмена
+          </button>
+          <button (click)="saveNewCategory()"
+                  [disabled]="uploadingCover || !newCategoryName.trim() || !newCategoryCoverUrl"
+                  class="px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg disabled:opacity-50">
             Создать
           </button>
         </div>
@@ -172,10 +128,46 @@
   }
 </section>
 
-<!-- УРОВЕНЬ 3: Lightbox (просмотр фото поверх модалки категории) -->
+<!-- УРОВЕНЬ 3: Полноэкранный просмотр фото со стрелками -->
 @if (selectedImage) {
-  <div class="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" (click)="closeImage()">
-    <img [src]="selectedImage" class="max-w-full max-h-full rounded-lg shadow-2xl" alt="Просмотр работы">
-    <button class="absolute top-4 right-4 text-white text-4xl font-bold" (click)="closeImage()">&times;</button>
+  <div (click)="closeImage()"
+       style="z-index: 100;"
+       class="fixed inset-0 bg-black/90 flex items-center justify-center p-4 select-none">
+
+    <!-- Стрелка влево -->
+    @if (activeCategory && activeCategory.works.length > 1) {
+      <button (click)="prevImage($event)"
+              aria-label="Предыдущее фото"
+              class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-900/80 hover:bg-yellow-500 text-white hover:text-black border border-white/20 text-2xl font-bold flex items-center justify-center transition shadow-lg z-20 cursor-pointer">
+        &#10094;
+      </button>
+    }
+
+    <!-- Изображение + счётчик -->
+    <div (click)="$event.stopPropagation()" class="relative flex flex-col items-center max-w-4xl max-h-[85vh]">
+      <img [src]="selectedImage" class="max-w-full max-h-[80vh] rounded-lg shadow-2xl object-contain"
+           alt="Просмотр работы">
+
+      @if (activeCategory && activeCategory.works.length > 1 && selectedImageIndex !== null) {
+        <span class="mt-3 px-3 py-1 rounded-full bg-gray-900/80 text-gray-200 text-sm">
+          {{ selectedImageIndex + 1 }} / {{ activeCategory.works.length }}
+        </span>
+      }
+    </div>
+
+    <!-- Стрелка вправо -->
+    @if (activeCategory && activeCategory.works.length > 1) {
+      <button (click)="nextImage($event)"
+              aria-label="Следующее фото"
+              class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-gray-900/80 hover:bg-yellow-500 text-white hover:text-black border border-white/20 text-2xl font-bold flex items-center justify-center transition shadow-lg z-20 cursor-pointer">
+        &#10095;
+      </button>
+    }
+
+    <!-- Кнопка закрытия -->
+    <button (click)="closeImage()"
+            class="absolute top-4 right-4 text-white hover:text-yellow-500 text-4xl font-bold transition z-20 cursor-pointer">
+      &times;
+    </button>
   </div>
 }
